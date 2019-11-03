@@ -1,22 +1,5 @@
-#include <iostream>
-#include <algorithm>
-#include <cstdio>
-#include <vector>
-#include <list>
-#include <map>
-#include <set>
-#include <string>
-#include <string.h>
-#include <iterator>
-#define M0(a) memset(a,0,sizeof a)
-#define M1(a) memset(a,1,sizeof a)
-#define M1_(a) memset(a,-1,sizeof a)
-#define D(v) cerr<<#v<<": "<<v<<endl
-#define D2(a,b) cerr<<#a<<": "<<a<<","<<#b<<": "<<b<<endl
-#define M100 1000000000
-#define M10 100000000
-#define M 10000000
-#define MS 100000
+//First Come First Serve Sheduling Algorithm
+#include <bits/stdc++.h>
 using namespace std;
 
 void waiting_times(int burst_time[],int waiting_time[],int n){
