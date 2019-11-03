@@ -1,4 +1,4 @@
-//First Come First Serve Sheduling Algorithm
+//First Come First Serve Scheduling Algorithm
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -30,7 +30,7 @@ int main(){
     int avg_waiting_time = fcfs(burst_time,waiting_time,n);
     cout<<"Average Waiting Time "<<avg_waiting_time<<endl;
     for(int i = 0; i < n; i++){
-        cout<<i+1<<" "<<burst_time[i]<<" "<<waiting_time[i]<<" \n";
+        cout<<"Process "<<i+1<<" "<<burst_time[i]<<" "<<waiting_time[i]<<" \n";
     }
     return 0;
 }
