@@ -1,0 +1,10 @@
+.MODEL SMALL
+.STACK 100H
+.CODE
+MAIN PROC
+mov dl,'a'
+mov ah,2
+int 21h
+mov ah,4ch
+MAIN ENDP
+END MAIN
