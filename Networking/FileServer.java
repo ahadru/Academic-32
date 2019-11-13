@@ -1,50 +1,55 @@
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.DataInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class FileServer {
+public class FileServer extends Thread {
+	
+	private ServerSocket ss;
+	
+	public FileServer(int port) {
+		try {
+			ss = new ServerSocket(port);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void run() {
+		while (true) {
+			try {
+				Socket clientSock = ss.accept();
+				saveFile(clientSock);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
-  public final static int SOCKET_PORT = 13267;  // you may change this
-  public final static String FILE_TO_SEND = "E:/Unknown/Academic-32 Code/Networking/source.txt";  // you may change this
+	private void saveFile(Socket clientSock) throws IOException {
+		DataInputStream dis = new DataInputStream(clientSock.getInputStream());
+		FileOutputStream fos = new FileOutputStream("testfile.jpeg");
+		byte[] buffer = new byte[4096];
+		
+		int filesize = 15123; // Send file size in separate msg
+		int read = 0;
+		int totalRead = 0;
+		int remaining = filesize;
+		while((read = dis.read(buffer, 0, Math.min(buffer.length, remaining))) > 0) {
+			totalRead += read;
+			remaining -= read;
+			System.out.println("read " + totalRead + " bytes.");
+			fos.write(buffer, 0, read);
+		}
+		
+		fos.close();
+		dis.close();
+	}
+	
+	public static void main(String[] args) {
+		FileServer fs = new FileServer(1988);
+		fs.start();
+	}
 
-  public static void main (String [] args ) throws IOException {
-    FileInputStream fis = null;
-    BufferedInputStream bis = null;
-    OutputStream os = null;
-    ServerSocket servsock = null;
-    Socket sock = null;
-    try {
-      servsock = new ServerSocket(SOCKET_PORT);
-      while (true) {
-        System.out.println("Waiting...");
-        try {
-          sock = servsock.accept();
-          System.out.println("Accepted connection : " + sock);
-          // send file
-          File myFile = new File (FILE_TO_SEND);
-          byte [] mybytearray  = new byte [(int)myFile.length()];
-          fis = new FileInputStream(myFile);
-          bis = new BufferedInputStream(fis);
-          bis.read(mybytearray,0,mybytearray.length);
-          os = sock.getOutputStream();
-          System.out.println("Sending " + FILE_TO_SEND + "(" + mybytearray.length + " bytes)");
-          os.write(mybytearray,0,mybytearray.length);
-          os.flush();
-          System.out.println("Done.");
-        }
-        finally {
-          if (bis != null) bis.close();
-          if (os != null) os.close();
-          if (sock!=null) sock.close();
-        }
-      }
-    }
-    finally {
-      if (servsock != null) servsock.close();
-    }
-  }
 }
