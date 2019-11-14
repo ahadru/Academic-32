@@ -27,9 +27,12 @@ public class FileClient {
 		fileInputStream.close();
 		dataOutputStream.close();	
 	}
+	void sendName(String fileName){
+		
+	}
 	
 	public static void main(String[] args) {
-		FileClient fileClient = new FileClient("localhost", 1988, "cat.jpeg");
+		FileClient fc = new FileClient("localhost", 1451, "cat.jpeg");
 	}
 
 }

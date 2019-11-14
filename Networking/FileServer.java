@@ -6,11 +6,12 @@ import java.net.Socket;
 
 public class FileServer extends Thread {
 	
-	private ServerSocket serverSocket;
+	private ServerSocket fileReceivingServerSoc;
+	private ServerSocket nameReceivingServerSoc;
 	
 	public FileServer(int port) {
 		try {
-			serverSocket = new ServerSocket(port);
+			fileReceivingServerSoc = new ServerSocket(port);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -19,7 +20,7 @@ public class FileServer extends Thread {
 	public void run() {
 		while (true) {
 			try {
-				Socket clientSock = serverSocket.accept();
+				Socket clientSock = fileReceivingServerSoc.accept();
 				saveFile(clientSock);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -43,13 +44,26 @@ public class FileServer extends Thread {
 			fileOutputStream.write(buffer, 0, read);
 		}
 		
-		fileOutputStream.close();
-		dataInputStream.close();
+		fos.close();
+		dis.close();
+		clientSock.close();
+		fileReceivingServerSoc.close();
+	}
+
+	void saveFileName(Socket nameReceivingSoc) throws IOException{
+
 	}
 	
 	public static void main(String[] args) {
-		FileServer fileServer = new FileServer(1988);
-		fileServer.start();
+		final int FILE_RECEIVING_PORT = 1971;
+		final int NAME_RECEIVING_PORT = 1972; 
+
+		new FileServer(FILE_RECEIVING_PORT);
+		fs.start();
+
+		nameReceivingServerSoc = new ServerSocket(NAME_RECEIVING_PORT);
+		Socket nameRecSoc = nameReceivingServerSoc.accept();
+
 	}
 
 }
