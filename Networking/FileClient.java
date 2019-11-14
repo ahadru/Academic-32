@@ -28,9 +28,12 @@ public class FileClient {
 		fis.close();
 		dos.close();	
 	}
+	void sendName(String fileName){
+		
+	}
 	
 	public static void main(String[] args) {
-		FileClient fc = new FileClient("localhost", 1988, "cat.jpeg");
+		FileClient fc = new FileClient("localhost", 1451, "cat.jpeg");
 	}
 
 }
