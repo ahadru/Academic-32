@@ -9,6 +9,8 @@ class FileReceivingServer{
     private ServerSocket serverSocket;
     private Socket socket;
     private final int PORT;
+    private DataInputStream dataInputStream;
+    private DataOutputStream dataOutputStream;
     public FileReceivingServer(int port){
         PORT = port;
         try{
@@ -18,13 +20,14 @@ class FileReceivingServer{
         }
         try {
             socket = serverSocket.accept();
+            dataInputStream = new DataInputStream(socket.getInputStream());
+            dataOutputStream = new DataOutputStream(socket.getOutputStream());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     public void saveFile(String filePath,int fileSize) throws IOException {   
-        DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
-        FileOutputStream fileOutputStream = new FileOutputStream("filePath");
+        FileOutputStream fileOutputStream = new FileOutputStream("Server" + filePath);
         byte[] buffer = new byte[16384];
     
         int read = 0;
@@ -41,12 +44,10 @@ class FileReceivingServer{
         dataInputStream.close();
     } 
     public String saveNameAndSize()throws IOException{
-        DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
         String fileNameAndSize = dataInputStream.readUTF();
         return fileNameAndSize;
     }
     public void sendResponse(String res) throws IOException{
-        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
         dataOutputStream.writeUTF(res);		
     }
     public void closeSockets() throws IOException{
