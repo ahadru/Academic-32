@@ -24,11 +24,11 @@ int fcfs(int burst_time[],int waiting_time[], int n){
 int main(){
     //freopen("in.txt","r",stdin);
     //freopen("out.txt","w",stdout);
-    int n = 3;
-    int burst_time[] = {24,3,4};
+    int n = 4;
+    int burst_time[] = {5,12,7,6};
     int waiting_time[n];
     int avg_waiting_time = fcfs(burst_time,waiting_time,n);
-    cout<<"Average Waiting Time "<<avg_waiting_time<<endl;
+    cout<<"Average Waiting Time: "<<avg_waiting_time<<endl;
     for(int i = 0; i < n; i++){
         cout<<"Process "<<i+1<<" "<<burst_time[i]<<" "<<waiting_time[i]<<" \n";
     }

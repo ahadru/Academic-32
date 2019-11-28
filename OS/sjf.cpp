@@ -1,44 +1,78 @@
-//First Come First Serve Scheduling Algorithm
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
+
 using namespace std;
-
-void waiting_times(vector<pair<int,int> > burst_time,int waiting_time[],int n){
-    int time_line = 0;
-    sort(burst_time.begin(),burst_time.end());
-    for(int i = 0;i < n;i++){
-        waiting_time[i] = time_line;
-        time_line += burst_time[i].first;
+ 
+struct Process
+{
+   int pid;    
+   int bt;      
+};
+ 
+bool comparison(Process a, Process b)
+{
+    return (a.bt < b.bt);
+}
+ 
+void findWaitingTime(Process proc[], int n, int wt[])
+{
+    wt[0] = 0;
+ 
+    for (int i = 1; i < n ; i++)
+    {
+        wt[i] = proc[i-1].bt + wt[i-1] ;
     }
 }
-float avg_waiting_time(int waiting_time[],int n){
-    int total_time = 0;
-    for(int i = 0;i<n;i++){
-        total_time += waiting_time[i];
+ 
+void findTurnAroundTime(Process proc[], int n, int wt[], int tat[])
+{
+    for (int i = 0; i < n ; i++)
+    {
+        tat[i] = proc[i].bt + wt[i];
     }
-    return (float)total_time/n;
 }
-void turn_around_times(vector<pair<int,int> > burst_time,int waiting_time[],int turn_around_time[],int n) { 
-    for (int  i = 0; i < n ; i++) 
-        turn_around_time[i] = burst_time[i].first + waiting_time[i]; 
-}
+ 
+void findAverageTime(Process proc[], int n)
+{
+    int wt[n], tat[n], total_wt = 0, total_tat = 0;
 
-int fcfs(vector<pair<int,int> > burst_time,int waiting_time[],int turn_around_time[], int n){
-    waiting_times(burst_time,waiting_time,n);
-    turn_around_times(burst_time,waiting_time,turn_around_time,n);
-    return avg_waiting_time(waiting_time,n);
-}
+    findWaitingTime(proc, n, wt);
 
-int main(){
-    //freopen("in.txt","r",stdin);
-    //freopen("out.txt","w",stdout);
-    int n = 3;
-    vector<pair<int,int>> burst_time = {{24,1},{3,2},{4,3}};
-    int waiting_time[n];
-    int turn_around_time[n];
-    int avg_waiting_time = fcfs(burst_time,waiting_time,turn_around_time,n);
-    cout<<"Average Waiting Time "<<avg_waiting_time<<endl;
-    for(int i = 0; i < n; i++){
-        cout<<"Process "<<burst_time[i].second<<"    "<<burst_time[i].first<<"     "<<waiting_time[i]<<"   "<<turn_around_time[i]<<" \n";
+    findTurnAroundTime(proc, n, wt, tat);
+ 
+
+    cout << "\nProcesses "<< " Burst time "
+         << " Waiting time " << " Turn around time\n";
+ 
+
+    for (int i = 0; i < n; i++)
+    {
+        total_wt = total_wt + wt[i];
+        total_tat = total_tat + tat[i];
+        cout << " " << proc[i].pid << "\t\t"
+             << proc[i].bt << "\t " << wt[i]
+             << "\t\t " << tat[i] <<endl;
     }
+ 
+    cout << "Average waiting time = "
+         << (float)total_wt / (float)n;
+    cout << "\nAverage turn around time = "
+         << (float)total_tat / (float)n;
+}
+ 
+int main()
+{
+    Process proc[] = {{1, 21}, {2, 3}, {3, 6}, {4, 2}};
+    int n = sizeof proc / sizeof proc[0];
+ 
+    sort(proc, proc + n, comparison);
+ 
+    cout << "Order in which process gets executed\n";
+    for (int i = 0 ; i < n; i++)
+    {
+        cout << proc[i].pid <<" ";
+    }
+ 
+    findAverageTime(proc, n);
+    
     return 0;
 }
