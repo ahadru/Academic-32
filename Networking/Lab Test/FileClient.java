@@ -19,7 +19,7 @@ public class FileClient {
             byte[] mybytearray = new byte[fileSize];
 
             // Create a file output stream to write a new file
-            FileOutputStream fos = new FileOutputStream(fileName + ".new");
+            FileOutputStream fos = new FileOutputStream("new-"+fileName);
 
             // Create a buffered output stream from the file o/p stream
             BufferedOutputStream bos = new BufferedOutputStream(fos);
