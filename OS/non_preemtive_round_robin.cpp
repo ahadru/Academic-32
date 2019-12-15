@@ -1,4 +1,4 @@
-#include<iostream> 
+#include<bits/stdc++.h> 
 using namespace std; 
 
 
@@ -69,14 +69,13 @@ void findavgTime(int processes[], int n, int bt[], int quantum) {
 	cout << "Average waiting time = "
 		<< (float)total_wt / (float)n; 
 	cout << "\nAverage turn around time = "
-		<< (float)total_tat / (float)n; 
-		
+		<< (float)total_tat / (float)n; 	
 } 
+
 
 int main() { 
 	int processes[] = { 1, 2, 3,4,5}; 
 	int n = sizeof processes / sizeof processes[0]; 
-
 	int burst_time[] = {10, 5, 8,3,2}; 
 
 	int quantum = 1; 

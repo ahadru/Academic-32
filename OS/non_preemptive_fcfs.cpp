@@ -2,6 +2,12 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+struct Process{
+    int id;
+    int burst_time;
+    int arival_time;
+};
+
 void waiting_times(int burst_time[],int waiting_time[],int n){
     int time_line = 0;
     for(int i = 0;i < n;i++){
