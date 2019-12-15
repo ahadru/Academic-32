@@ -1,0 +1,8 @@
+﻿  Assembling Wellcome.asm...
+Wellcome.asm(11): error A2006: undefined symbol : DGROUP
+Wellcome.asm(14): error A2074: cannot access label through segment registers
+Wellcome.asm(15): error A2074: cannot access label through segment registers
+Wellcome.asm(16): error A2074: cannot access label through segment registers
+Wellcome.asm(17): error A2074: cannot access label through segment registers
+Wellcome.asm(22): warning A4023: with /coff switch, leading underscore required for start address : main
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\BuildCustomizations\masm.targets(70,5): error MSB3721: The command "ml.exe /c /nologo /Zi /Fo"Debug\Wellcome.obj" /W3 /errorReport:prompt  /TaWellcome.asm" exited with code 1.
