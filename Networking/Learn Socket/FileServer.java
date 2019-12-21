@@ -51,23 +51,32 @@ class FileServer extends Thread{
     public void run(){
         System.out.println("Server is ready to communicate....");
         start(5555);
-        System.out.println("Send FILE_TRANSFER msg for file transmiting");
+        System.out.println("Connected, Send FILE_TRANSFER msg for file transmiting");
         try {
-            PrintWriter out = new PrintWriter(socket.getOutputStream());
+            PrintWriter out = new PrintWriter(socket.getOutputStream(),true);
             DataInputStream in = new DataInputStream(socket.getInputStream());
-            while(true){
-                String request = in.readUTF();
-                System.out.println(request);
-                if("FILE_TRANSFER".equals(request)){
-                    saveFile(out, in);
-                }
-                else if("QUIT".equals(request)){
-                    break;
-                }
-                else{
-                    out.write("Server is Ready..");
-                }
+            
+            String request = in.readUTF();
+            System.out.println(request);
+            if("FILE_TRANSFER".equals(request)){
+                saveFile(out, in);
             }
+            else if("QUIT".equals(request)){
+                
+            }
+            else{
+                out.write("Server is Ready..");
+            }
+            
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        close__();
+    }
+    void close__(){
+        try {
+            serverSocket.close();
+            socket.close();
         } catch (Exception e) {
             System.out.println(e);
         }

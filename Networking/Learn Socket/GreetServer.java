@@ -9,15 +9,15 @@ class GreetServer{
     private BufferedReader in;
 
     public void start(int port){
-        String greeting = "";
+        String greeting = "F";
         try {
             serverSocket = new ServerSocket(port);
             clientSocket = serverSocket.accept();
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             greeting = in.readLine();
+            System.out.println(greeting);
         } catch (Exception e) {
-            //  : handle exception
             System.out.println(e);
         }
         
@@ -67,6 +67,6 @@ class GreetServer{
     }
     public static void main(String[] args) {
         GreetServer server = new GreetServer();
-        server.start(6666);
+        server.start(5555);
     }
 }
