@@ -8,7 +8,7 @@ int main()
 {
 	int gd = DETECT, gm;
 	initgraph(&gd, &gm, "");
-
+    //outtext("Ahad");
 	line(150, 150, 450, 150);
 
 	line(150, 200, 450, 200);
