@@ -1,10 +1,13 @@
-.MODEL SMALL
-.STACK 100H
+.MODEL SMALL 
+.STACK 200H
+.DATA
+     NUM DB 100H
 .CODE
 MAIN PROC
-mov dl,'a'
-mov ah,2
-int 21h
-mov ah,4ch
-MAIN ENDP
-END MAIN
+        
+        
+        
+    MOV AH, 4CH
+    INT 21H
+MAIN ENDP        
+END MAIN ;EXIT(0)
