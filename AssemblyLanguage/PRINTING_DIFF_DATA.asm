@@ -1,18 +1,3 @@
-<<<<<<< HEAD
-.MODEL SMALL 
-.STACK 200H
-.DATA
-     NUM DB 100H
-.CODE
-MAIN PROC
-        
-        
-        
-    MOV AH, 4CH
-    INT 21H
-MAIN ENDP        
-END MAIN ;EXIT(0)
-=======
 .MODEL SMALL
 .STACK 200H
 .DATA
@@ -58,4 +43,3 @@ MAIN PROC
 MAIN ENDP
 END MAIN
     
->>>>>>> 0edd326b8492f5a0fec80c065fde8afc20e6cd09
