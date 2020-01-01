@@ -1,94 +1,177 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
+#include <iostream>
+#define MAX 20
 using namespace std;
-int main()
+ 
+class bankers
 {
-    int alloc[10][10], max[10][10], avail[10], n, m, need[10][10], i, j, k, finish[10], work[10];
-    int SSeq[10];
-
-    cout << "Enter no. of processes:";
-    cin >> n;
-    cout << "Enter no. of resources:";`
-    cin >> m;
-    // cout<<"Enter allocation matrix:";
-    for (i = 0; i < n; i++)
+    private:
+        int al[MAX][MAX],m[MAX][MAX],n[MAX][MAX],avail[MAX];
+        int nop,nor,k,result[MAX],pnum,work[MAX],finish[MAX];
+ 
+    public:
+        bankers();
+        void input();
+        void method();
+        int search(int);
+        void display();
+};
+ 
+bankers::bankers()
+{
+    k=0;
+    for(int i=0;i<MAX;i++)
     {
-        for (j = 0; j < m; j++)
+        for(int j=0;j<MAX;j++)
         {
-            cout << "\nEnter no. of instances of " << j + 1 << "allocated to " << i + 1 << ":";
-            cin >> alloc[i][j];
+            al[i][j]=0;
+            m[i][j]=0;
+            n[i][j]=0;
+        }
+        avail[i]=0;
+        result[i]=0;
+        finish[i]=0;
+    }
+}
+ 
+void bankers::input()
+{
+    int i,j;
+    cout << "Enter the number of processes:";
+    cin >> nop;
+    cout << "Enter the number of resources:";
+    cin >> nor;
+    cout << "Enter the allocated resources for each process: " << endl;
+    for(i=0;i<nop;i++)
+    {
+        cout<<"\nProcess "<<i;
+        for(j=0;j<nor;j++)
+        {
+            cout<<"\nResource "<<j<<":";
+            cin>>al[i][j];
         }
     }
-    // cout<<"\nEnter max matrix";
-    for (i = 0; i < n; i++)
+    cout<<"Enter the maximum resources that are needed for each process: "<<endl;
+    for(i=0;i<nop;i++)
     {
-        for (j = 0; j < m; j++)
+        cout<<"\nProcess "<<i;
+        for(j=0;j<nor;j++)
         {
-            cout << "\nEnter maximum instances of" << j + 1 << "allocated to" << i + 1 << ":";
-            cin >> max[i][j];
+            cout<<"\nResouce "<<j<<":";
+            cin>>m[i][j];
+            n[i][j]=m[i][j]-al[i][j];
         }
     }
-
-    for (i = 0; i < m; i++)
+    cout << "Enter the currently available resources in the system: ";
+    for(j=0;j<nor;j++)
     {
-        cout << "\nEnter available instances of" << i + 1;
-        cin >> avail[i];
+        cout<<"Resource "<<j<<":";
+        cin>>avail[j];
+        work[j]=-1;
     }
-    //calculate need matrix
-    for (i = 0; i < n; i++)
+    for(i=0;i<nop;i++)
+        finish[i]=0;
+}
+ 
+void bankers::method()
+{
+    int i=0,j,flag;
+    while(1)
     {
-        for (j = 0; j < m; j++)
+        if(finish[i]==0)
         {
-            need[i][j] = max[i][j] - alloc[i][j];
-        }
-    }
-    cout << "\nAllocation matrix is:";
-    for (i = 0; i < n; i++)
-    {
-        for (j = 0; j < m; j++)
-        {
-            cout << alloc[i][j] << "\t";
-        }
-        cout << endl;
-    }
-    cout << "\nMax matrix is:";
-    for (i = 0; i < n; i++)
-    {
-        for (j = 0; j < m; j++)
-        {
-            cout << max[i][j] << "\t";
-        }
-        cout << endl;
-    }
-    cout << "\nNeed matrix is:";
-    for (i = 0; i < n; i++)
-    {
-        for (j = 0; j < m; j++)
-        {
-            cout << need[i][j] << "\t";
-        }
-        cout << endl;
-    }
-    //initialize work and finish
-    for (i = 0; i < n; i++)
-        work[i] = avail[i];
-    k = 0;
-    for (i = 0; i < n; i++)
-    {
-        for (j = 0; j < m; j++)
-        {
-            if (finish[i] == 0 && need[i][j] <= work[j])
+            pnum =search(i);
+            if(pnum!=-1)
             {
-                SSeq[k] = i + 1;
-                k++;
-                work[i] = work[i] + alloc[i][j];
+                result[k++]=i;
+                finish[i]=1;
+                for(j=0;j<nor;j++)
+                {
+                    avail[j]=avail[j]+al[i][j];
+                }
             }
         }
+        i++;
+        if(i==nop)
+        {
+            flag=0;
+            for(j=0;j<nor;j++)
+                if(avail[j]!=work[j])
+ 
+            flag=1;
+            for(j=0;j<nor;j++)
+                work[j]=avail[j];
+ 
+            if(flag==0)
+                break;
+            else
+                i=0;
+        }
     }
-    cout << "safe sequence is:";
-    for (i = 0; i < k; i++)
-        cout << SSeq[i] << ",";
-    if (k == n)
-        cout << "\nThe system is safe.\n";
+}
+ 
+int bankers::search(int i)
+{
+    int j;
+    for(j=0;j<nor;j++)
+        if(n[i][j]>avail[j])
+            return -1;
+    return 0;
+}
+ 
+void bankers::display()
+{
+    int i,j;
+    cout<<endl<<"OUTPUT:";
+    cout<<endl<<"========";
+    cout<<endl<<"PROCESS\t     ALLOTED\t     MAXIMUM\t     NEED";
+    for(i=0;i<nop;i++)
+    {
+        cout<<"\nP"<<i+1<<"\t     ";
+        for(j=0;j<nor;j++)
+        {
+            cout<<al[i][j]<<"  ";
+        }
+        cout<<"\t     ";
+        for (j=0;j<nor;j++)
+        {
+            cout<<m[i][j]<<"  ";
+        }
+        cout<<"\t     ";
+        for(j=0;j<nor;j++ )
+        {
+            cout<<n[i][j]<<"  ";
+        }
+    }
+    cout<<"\nThe sequence of the safe processes are: \n";
+    for(i=0;i<k;i++)
+    {
+        int temp = result[i]+1 ;
+        cout<<"P"<<temp<<" ";
+    }
+    cout<<"\nThe sequence of unsafe processes are: \n";
+    int flg=0;
+    for (i=0;i<nop;i++)
+    {
+        if(finish[i]==0)
+        {
+        flg=1;
+        }
+        cout<<"P"<<i<<" ";
+    }
+    cout<<endl<<"RESULT:";
+    cout<<endl<<"=======";
+    if(flg==1)
+        cout<<endl<<"The system is not in safe state and deadlock may occur!!";
     else
-        cout << "\nDeadlock occurence!!\n";
+        cout<<endl<<"The system is in safe state and deadlock will not occur!!";
+}
+ 
+int main()
+{
+    cout<<" DEADLOCK BANKER’S ALGORITHM "<<endl;
+    bankers B;
+    B.input ( );
+    B.method ( );
+    B.display ( );
 }
