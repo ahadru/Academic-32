@@ -1,7 +1,7 @@
 import java.io.*;
 import java.net.*;
 
-class AzMail {
+class SMTPMailClient {
 
     public static void main(String argv[]) throws Exception {
 
@@ -36,7 +36,6 @@ class AzMail {
 
         os.println("QUIT");
         System.out.println("Response6: " + br.readLine());
-
         System.out.println("Response7: " + br.readLine());
 
     }
