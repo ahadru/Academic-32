@@ -1,0 +1,45 @@
+INCLUDE "EMU8086.INC"
+.MODEL SMALL
+.STACK 100H
+.DATA 
+.CODE
+MAIN PROC
+    PRINT "Input string: "    
+    MOV CX, 0
+INPUT:
+    MOV AH, 01H
+    INT 21H
+    CMP AL, 13
+    JE ENDINPUT
+    
+    PUSH AX  
+    INC CX
+    JMP INPUT
+    
+ENDINPUT:
+    CALL NEWLINE
+    PRINT "Reversed string: "
+    
+OUTPUT:
+    POP DX
+    MOV AH, 02H  
+    INT 21H
+    DEC CX
+    JZ END
+    JMP OUTPUT
+    
+END:
+    MOV AH, 4CH
+    INT 21H
+            
+MAIN ENDP
+
+NEWLINE PROC
+    MOV AH, 2H
+    MOV DL, 0AH
+    INT 21H
+    MOV DL, 0DH
+    INT 21H
+    RET
+NEWLINE ENDP
+END MAIN
