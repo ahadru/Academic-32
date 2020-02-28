@@ -1,14 +1,14 @@
-//C++ implementation of above algorithm 
+//C++ implementation of lru page fault algorithm 
 #include<bits/stdc++.h> 
 using namespace std; 
 
 int pageFaults(int pages[], int n, int capacity) { 
-	set<int> s; 
-    map<int, int> indexes; 
+	set<int> s;  							// for frames
+    map<int, int> indexes; 					// for frame uodate index
 
 	int page_faults = 0; 
-	for (int i=0; i<n; i++) { 
-		if (s.size() < capacity) { 
+	for (int i=0; i<n; i++) {           	// iterating through pages array
+		if (s.size() < capacity) { 			// if any frame have empty slot
 			if (s.find(pages[i])==s.end()) { 
 				s.insert(pages[i]); 
 				page_faults++; 
@@ -19,7 +19,7 @@ int pageFaults(int pages[], int n, int capacity) {
 			if (s.find(pages[i]) == s.end()) {  
 				int lru = INT_MAX, val;
                 set<int>::iterator it; 
-				for (it=s.begin(); it!=s.end(); it++) 
+				for (it=s.begin(); it!=s.end(); it++) // iterating for minimul page index
 				{ 
 					if (indexes[*it] < lru) 
 					{ 
@@ -27,8 +27,8 @@ int pageFaults(int pages[], int n, int capacity) {
 						val = *it; 
 					} 
 				} 
-				s.erase(val); 
-				s.insert(pages[i]); 
+				s.erase(val); 						// remove value which has minimul page index
+				s.insert(pages[i]); 				// insert the new value 
 				page_faults++; 
 			} 
 			indexes[pages[i]] = i; 
