@@ -1,59 +1,152 @@
-INCLUDE "EMU8086.INC"
+INCLUDE 'EMU8086.INC'
+
 .MODEL SMALL
 .STACK 100H
-.DATA 
-    STR DB 80 DUP(?)
+
+.DATA
+    str DB 80 DUP(?)  
+    i DB ?
+    j DB ?
+    
+        
 .CODE
-MAIN PROC
+MAIN PROC 
     MOV AX, @DATA
     MOV DS, AX
+    PRINT 'Enter the string : '
     
-    PRINT "Enter a string: "
-    LEA SI, STR   
-    MOV CX, 0
+    LEA SI, str   
+    MOV CL, 0
+    INPUT:
+        MOV AH,1
+        INT 21H
+        
+        CMP AL, 13
+        JZ ENDINPUT
+        
+        MOV str[SI], AL
+        INC SI
+        INC CL
+        
+        JMP INPUT
+        
+    ENDINPUT:
+        MOV str[SI], "$"
     
-INPUT:
-    MOV AH, 01H
-    INT 21H
-    CMP AL, 13D
-    JE ENDINPUT 
+    CALL DSORT
     
-    MOV STR[SI], AL
-    INC SI
-    INC CX
-    JMP INPUT    
-               
-ENDINPUT:
     CALL NEWLINE
-    PRINT "Reversed string: "
-    DEC SI
-
-OUTPUT:
-    MOV AH, 02H
-    MOV DL, STR[SI]
+    
+    PRINT 'Sorted string : '
+    
+    LEA DX, STR
+    MOV AH, 9
     INT 21H
     
-    DEC CX
-    CMP CX, 0
-    JE ENDOUTPUT
-    DEC SI
-    JMP OUTPUT             
-               
-               
-ENDOUTPUT:
-               
-    MOV AH, 4CH
-    INT 21H   
     
+    MOV AH,4CH
+    INT 21H
 MAIN ENDP
 
-
 NEWLINE PROC
-    MOV AH, 2H
-    MOV DL, 0AH
+    MOV AH,2
+    MOV DL,10
     INT 21H
-    MOV DL, 0DH
+    
+    MOV DL,13
     INT 21H
     RET
 NEWLINE ENDP
+
+ASORT PROC
+    MOV i, 0
+    MOV j, 0
+    LEA SI, str 
+   
+    AFOR1:
+        MOV BL, i
+        CMP BL, CL
+        JE ENDAFOR1
+             
+        MOV BL, i;
+        MOV j, BL
+        INC j  
+        MOV DI, SI
+        INC DI           
+        AFOR2:              
+            MOV BL, j             
+            
+            CMP BL, CL
+            JE ENDAFOR2
+            
+            MOV AL, str[SI]
+            CMP AL, str[DI]
+            JG ASWAP
+            INC j 
+            INC DI
+            JMP AFOR2
+                    
+            ASWAP:
+                MOV AL, STR[SI]
+                XCHG AL, STR[DI]
+                MOV STR[SI], AL           
+                
+                INC j
+                INC DI
+                JMP AFOR2
+            
+        ENDAFOR2:                                
+        INC SI
+        INC i
+        JMP AFOR1
+    ENDAFOR1:            
+    
+    RET
+ASORT ENDP
+
+DSORT PROC
+    MOV i, 0
+    MOV j, 0
+    LEA SI, str 
+   
+    DFOR1:
+        MOV BL, i
+        CMP BL, CL
+        JE ENDDFOR1
+             
+        MOV BL, i;
+        MOV j, BL
+        INC j  
+        MOV DI, SI
+        INC DI           
+        DFOR2:              
+            MOV BL, j             
+            
+            CMP BL, CL
+            JE ENDDFOR2
+            
+            MOV AL, str[SI]
+            CMP AL, str[DI]
+            JL DSWAP
+            INC j 
+            INC DI
+            JMP DFOR2
+                    
+            DSWAP:
+                MOV AL, STR[SI]
+                XCHG AL, STR[DI]
+                MOV STR[SI], AL           
+                
+                INC j
+                INC DI
+                JMP DFOR2
+            
+        ENDDFOR2:                                
+        INC SI
+        INC i
+        JMP DFOR1
+    ENDDFOR1:
+    RET
+DSORT ENDP
+    
 END MAIN
