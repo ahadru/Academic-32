@@ -1,0 +1,13 @@
+FCFS
+SJF
+SRTF
+Priority
+Round-Robin
+Safety
+Safety Request
+Deadlock
+First Fit
+Best Fit
+Worst Fit
+Page Fault (FIFO)
+Page Fault (LRU)
