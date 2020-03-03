@@ -11,6 +11,5 @@ int main(){
     rectangle(100, 100, 400, 400);
     delay(10000);
     closegraph();
-
     return 0;
 }
