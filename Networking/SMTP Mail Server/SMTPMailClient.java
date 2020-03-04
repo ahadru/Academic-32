@@ -37,6 +37,5 @@ class SMTPMailClient {
         os.println("QUIT");
         System.out.println("Response6: " + br.readLine());
         System.out.println("Response7: " + br.readLine());
-
     }
 }
