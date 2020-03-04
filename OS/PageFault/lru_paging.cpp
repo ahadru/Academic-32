@@ -18,7 +18,7 @@ int pageFaults(int pages[], int n, int capacity) {
 		else{ 
 			if (s.find(pages[i]) == s.end()) {  
 				int lru = INT_MAX, val;
-                set<int>::iterator it; 
+                		set<int>::iterator it; 
 				for (it=s.begin(); it!=s.end(); it++) // iterating for minimul page index
 				{ 
 					if (indexes[*it] < lru) 
